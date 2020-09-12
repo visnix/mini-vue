@@ -1,9 +1,14 @@
-import zVue from '../packages/vue3.js'
+import zVue from '../packages/vue2.js'
 
 const w = new zVue({
   el: '#app',
   data: {
     "name": "visnix",
-    "content": "我是一枚优秀的程序员",
+    "content": "前端开发工程师",
   },
+  methods: {
+    plus: function () {
+      console.log('hello')
+    }
+  }
 })

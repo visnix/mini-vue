@@ -41,13 +41,13 @@ class zCompile{
 		
 		this.$vm = vm;
 		if (this.$el) {
-			this.$fragment = this.getNodeChirdren( this.$el );
+			this.$fragment = this.getNodeChildren( this.$el );
 			this.compile( this.$fragment);
 			this.$el.appendChild(this.$fragment);
 		}
 	}
 	
-	getNodeChirdren(el){
+	getNodeChildren(el){
 		const frag = document.createDocumentFragment();
 		
 		let child;

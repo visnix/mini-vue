@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>mini-vue</title>
+	<link rel="icon" type="image/png" href="../assets/favicon.ico">
 	<link rel="stylesheet" href="./index.css"/>
 </head>
 <body>
@@ -16,6 +17,9 @@
 			<div>{{content}}</div>
 			<div>
 				<input type="text" z-model="content" placeholder="请输入自我介绍" />
+				<div>
+					<button @click="plus">点击事件</button>
+				</div>
 			</div>
 		</div>
 	</div>

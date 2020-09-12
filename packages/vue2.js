@@ -16,7 +16,7 @@ export default class zVue {
 		}
 		Object.keys(data).forEach(key => {//如果是对象进行解析
 			this.observerSet(key, data, data[key]);//监听data对象
-			this.proxyData(key);//本地代理服务
+			this.proxyData(key); //代理data到最上层，this.xxx的方式直接访问data
 		});
 	}
 	
@@ -34,7 +34,7 @@ export default class zVue {
 				}
 				value = newValue;
 				//通知变化
-				dep.notiyDep();
+				dep.notifyDep();
 			}
 		})
 	}
@@ -62,7 +62,7 @@ class Dep{
 		this.deps.push(dep);
 	}
 	
-	notiyDep(){
+	notifyDep(){
 		this.deps.forEach(dep => {
 			dep.update();
 		})
@@ -76,13 +76,18 @@ class zCompile{
 		
 		this.$vm = vm;
 		if (this.$el) {
-			this.$fragment = this.getNodeChirdren( this.$el );
+			this.$fragment = this.getNodeChildren( this.$el );
 			this.compile( this.$fragment);
 			this.$el.appendChild(this.$fragment);
 		}
 	}
 	
-	getNodeChirdren(el){
+	getNodeChildren(el){
+		/**
+		 * 调用多次document.body.append(),每次都要刷新页面一次。效率也就大打折扣了，
+		 * 而使用document_createDocumentFragment()创建一个文档碎片，
+		 * 把所有的新结点附加在其上，然后把文档碎片的内容一次性添加到document中，这也就只需要一次页面刷新就可。
+		 */
 		const frag = document.createDocumentFragment();
 		
 		let child;
