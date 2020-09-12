@@ -1,9 +1,4 @@
-/*
-	本代码来自weizhan
-	github链接：https://github.com/zhuangweizhan
-	csdn链接：https://blog.csdn.net/zhuangweizhan/
-*/
-class zVue {
+export default class zVue {
 	constructor(options){
 		this.$options = options;
 		this.$data = options.data;
