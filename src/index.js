@@ -5,6 +5,7 @@ const w = new zVue({
   data: {
     "name": "visnix",
     "content": "前端开发工程师",
+    "innerHTML": "<h1>mini-vue</h1>"
   },
   methods: {
     plus: function () {
