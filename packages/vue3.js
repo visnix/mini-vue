@@ -22,11 +22,14 @@ export default class zVue {
     const _this = this;
     const handler = {
       set(target, key, value) {
-        const rest = Reflect.set(target, key, value);
         _this.$binding[key].map((item) => {
           item.update();
         });
-        return rest;
+        // 递归创建并返回
+        if (typeof target[key] === 'object' && target[key] !== null) {
+          return new Proxy(target[key], handler)
+        }
+        return Reflect.set(target, key, value);
       },
     };
     this.$data = new Proxy(data, handler);
@@ -106,7 +109,7 @@ class zCompile {
   }
 
   zDir_html(node, value) {
-    this.updaterHtml(node, this.$vm[value]);
+    this.updaterHtml(node, this.$vm.$data[value]);
   }
 
   updaterHtml(node, value) {
@@ -127,9 +130,15 @@ class zCompile {
     switch (type) {
       case 'text':
         if (key) {
+          let value;
+          if(String(key).indexOf('.') !== -1) {
+            value = String(key).split('.').reduce((value, cur) => value = value[cur], this.$vm.$data)
+          } else {
+            value = this.$vm.$data[key]
+          }
           const updater = this.updateText;
           const initVal = node.textContent;// 记录原文本第一次的数据
-          updater(node, this.$vm.$data[key], initVal);
+          updater(node, value, initVal);
           this.$vm.pushWatch(
             new Watcher(this.$vm, key, initVal, ((value, initVal) => {
               updater(node, value, initVal);
